@@ -2,11 +2,13 @@ package com.insomniacoder.springkafkanas.services;
 
 import com.insomniacoder.springkafkanas.models.MessagePayload;
 import com.insomniacoder.springkafkanas.services.interfaces.MessageProducer;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 public class MessageProducerImpl implements MessageProducer {
 
@@ -27,7 +29,10 @@ public class MessageProducerImpl implements MessageProducer {
         String[] messageTypes = payload.getType().split(",");
 
         for (String messageType: messageTypes) {
-            this.template.send(topicName + "-" + messageType, messageType, payload);
+
+            String topicName = this.topicName + "-" + messageType;
+            log.info("publishing message to topic: {}, with message {}",topicName, payload);
+            this.template.send(topicName, messageType, payload);
         }
     }
 }
