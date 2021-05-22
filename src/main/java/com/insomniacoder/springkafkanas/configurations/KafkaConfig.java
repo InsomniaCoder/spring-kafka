@@ -1,6 +1,6 @@
 package com.insomniacoder.springkafkanas.configurations;
 
-import org.apache.kafka.clients.admin.NewTopic;
+import com.insomniacoder.springkafkanas.models.MessagePayload;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,12 +37,12 @@ public class KafkaConfig {
     }
 
     @Bean
-    public ProducerFactory<String, Object> producerFactory() {
+    public ProducerFactory<String, MessagePayload> producerFactory() {
         return new DefaultKafkaProducerFactory<>(producerConfigs());
     }
 
     @Bean
-    public KafkaTemplate<String, Object> kafkaTemplate() {
+    public KafkaTemplate<String, MessagePayload> kafkaTemplate() {
         return new KafkaTemplate<>(producerFactory());
     }
 
