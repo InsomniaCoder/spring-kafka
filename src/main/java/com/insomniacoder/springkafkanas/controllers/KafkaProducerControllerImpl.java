@@ -17,8 +17,6 @@ import javax.validation.Valid;
 @RequestMapping("/send-payload")
 public class KafkaProducerControllerImpl implements KafkaProducerController {
 
-
-
     @Autowired
     private MessageProducer producer;
 
