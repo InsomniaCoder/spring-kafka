@@ -1,5 +1,9 @@
 spring:
   kafka:
     bootstrap-servers: localhost:9092
-
+    consumer:
+      properties:
+        spring.json.trusted.packages: "com.insomniacoder.springkafkanas.*"
 topic-name: topic
+
+consumer-group: test
