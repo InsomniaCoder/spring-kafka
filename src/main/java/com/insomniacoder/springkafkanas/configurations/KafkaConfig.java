@@ -1,6 +1,7 @@
 package com.insomniacoder.springkafkanas.configurations;
 
 import com.insomniacoder.springkafkanas.models.MessagePayload;
+import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,5 +46,27 @@ public class KafkaConfig {
     public KafkaTemplate<String, MessagePayload> kafkaTemplate() {
         return new KafkaTemplate<>(producerFactory());
     }
+
+    @Bean
+    public NewTopic test1() {
+        return new NewTopic(topicName+"-type1", 2, (short) 1);
+    }
+    @Bean
+    public NewTopic test2() {
+        return new NewTopic(topicName+"-type2", 2, (short) 1);
+    }
+    @Bean
+    public NewTopic test3() {
+        return new NewTopic(topicName+"-type3", 2, (short) 1);
+    }
+    @Bean
+    public NewTopic test4() {
+        return new NewTopic(topicName+"-type4", 2, (short) 1);
+    }
+    @Bean
+    public NewTopic test5() {
+        return new NewTopic(topicName+"-type5", 2, (short) 1);
+    }
+
 
 }
