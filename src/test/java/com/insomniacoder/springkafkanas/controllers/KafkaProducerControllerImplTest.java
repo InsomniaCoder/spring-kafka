@@ -48,4 +48,19 @@ class KafkaProducerControllerImplTest {
         verify(messageProducer).produceMessage(eq(payload));
     }
 
+    @Test
+    public void testControllerProduceWithMultipleMessageTypeShouldGetOK() throws Exception {
+
+        doNothing().when(messageProducer).produceMessage(any());
+
+        MessagePayload payload = MessagePayload.builder().type("type1,type2,type3")
+                .message("test").build();
+
+        this.mockMvc.perform(post(SEND_MESSAGE_URL)
+                .contentType("application/json")
+                .content(objectMapper.writeValueAsString(payload)))
+                .andExpect(status().isOk());
+        verify(messageProducer).produceMessage(eq(payload));
+    }
+
 }
