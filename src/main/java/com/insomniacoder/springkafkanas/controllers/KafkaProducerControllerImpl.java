@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/send-payload")
 public class KafkaProducerControllerImpl implements KafkaProducerController {
@@ -18,7 +20,7 @@ public class KafkaProducerControllerImpl implements KafkaProducerController {
 
     @PostMapping
     @Override
-    public void sendMessage(@RequestBody MessagePayload messagePayload) {
+    public void sendMessage(@Valid @RequestBody MessagePayload messagePayload) {
         producer.produceMessage(messagePayload);
     }
 }

@@ -63,4 +63,55 @@ class KafkaProducerControllerImplTest {
         verify(messageProducer).produceMessage(eq(payload));
     }
 
+    @Test
+    public void testControllerProduceWithEmptyMessageTypeShouldGetBadRequest() throws Exception {
+
+        doNothing().when(messageProducer).produceMessage(any());
+
+        MessagePayload payload = MessagePayload.builder()
+                .message("test").build();
+
+        this.mockMvc.perform(post(SEND_MESSAGE_URL)
+                .contentType("application/json")
+                .content(objectMapper.writeValueAsString(payload)))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void testControllerProduceWithEmptyMessageShouldGetBadRequest() throws Exception {
+
+        doNothing().when(messageProducer).produceMessage(any());
+
+        MessagePayload payload = MessagePayload.builder().type("type1").build();
+
+        this.mockMvc.perform(post(SEND_MESSAGE_URL)
+                .contentType("application/json")
+                .content(objectMapper.writeValueAsString(payload)))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void testControllerProduceWithWrongMessageTypeShouldGetBadRequest() throws Exception {
+
+        MessagePayload payload = MessagePayload.builder().type("type1,,,")
+                .message("test").build();
+
+        this.mockMvc.perform(post(SEND_MESSAGE_URL)
+                .contentType("application/json")
+                .content(objectMapper.writeValueAsString(payload)))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void testControllerProduceWithWrongMessageFormatShouldGetBadRequest() throws Exception {
+
+        MessagePayload payload = MessagePayload.builder().type("one,two,,")
+                .message("test").build();
+
+        this.mockMvc.perform(post(SEND_MESSAGE_URL)
+                .contentType("application/json")
+                .content(objectMapper.writeValueAsString(payload)))
+                .andExpect(status().isBadRequest());
+    }
+
 }
