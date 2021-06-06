@@ -18,3 +18,6 @@ curl --header "Content-Type: application/json" \
   --data '{"type":"type1,type2","message":"test2"}' \
   http://localhost:8080/send-payload
 ```
+
+
+[![Build Status](https://travis-ci.com/github/InsomniaCoder/spring-kafka.svg?branch=master)](https://travis-ci.com/github/InsomniaCoder/spring-kafka)
