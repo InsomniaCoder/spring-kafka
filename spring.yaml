@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-boot-prometheus-dc
+spec:
+  selector:
+    matchLabels:
+      app: spring-boot-prometheus
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: spring-boot-prometheus
+    spec:
+      containers:
+        - name: spring-boot-prometheus
+          image: <>
+          imagePullPolicy: IfNotExist
+          ports:
+            - containerPort: 8080
+          resources:
+            limits:
+              memory: 512Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: spring-boot-prometheus-dc
+  labels:
+    prometheus.io/scrape: "true"
+spec:
+  ports:
+  - name: http
+    port: 8000
+    protocol: TCP
+    targetPort: http
+  selector:
+    app: spring-boot-prometheus
+  type: ClusterIP
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    app: prometheus-operator-general
+    release: prometheus-operator
+  name: prometheus-operator-general
+spec:
+  endpoints:
+  - path: /actuator/prometheus
+    port: http
+  namespaceSelector:
+    matchNames:
+    - default
+  selector:
+    matchLabels:
+      prometheus.io/scrape: "true"
